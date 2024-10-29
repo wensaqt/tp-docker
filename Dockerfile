@@ -15,8 +15,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
-    certbot \
-    python3-certbot-nginx \
     && apt-get clean
 
 COPY index.html /var/www/
