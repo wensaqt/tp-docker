@@ -21,14 +21,12 @@ RUN apt-get update && apt-get install -y \
 
 COPY index.html /var/www/
 
-COPY ./ssl /etc/nginx/ssl
+COPY ./certs /etc/nginx/certs/
 
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
-
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf 
+COPY config/default /etc/nginx/sites-available/
+RUN ln -fs /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
 RUN service mysql start
-
 RUN service mysql start && \
     mysql -e "CREATE DATABASE wordpress;" && \
     mysql -e "CREATE USER 'wp_user'@'localhost' IDENTIFIED BY 'wp_password';" && \
