@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y \
     python3-certbot-nginx \
     && apt-get clean
 
+COPY index.html /var/www/
+
 COPY ./ssl /etc/nginx/ssl
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
@@ -33,9 +35,9 @@ RUN service mysql start && \
     mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wp_user'@'localhost';" && \
     mysql -e "FLUSH PRIVILEGES;"
 
-RUN wget -O /tmp/wordpress.tar.gz https://wordpress.org/latest.tar.gz && \
-    tar -xzf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1 && \
-    chown -R www-data:www-data /var/www/html
+RUN  wget http://wordpress.org/latest.tar.gz && \
+    tar xzvf latest.tar.gz && mv wordpress /var/www/wordpress && \ 
+    chown -R www-data:www-data /var/www/wordpress
 
 RUN wget -O /tmp/phpMyAdmin.zip https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip && \
     unzip /tmp/phpMyAdmin.zip -d /tmp/ && \
